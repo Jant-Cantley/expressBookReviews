@@ -11,20 +11,18 @@ app.use(express.json());
 app.use("/customer",session({secret:"fingerprint_customer",resave: true, saveUninitialized: true}))
 
 app.use("/customer/auth/*", function auth(req,res,next){
-   let token = req/session.authorzation;
-   if(token) {
-    token =['accessToken'];
-    jwt.verify(token, "access",(err,user)=>{
-        if(!err){
-            req.user = user;
-            next();
-        } else {
-            return res.status(403).json({message: "Customer not authenticated"})
-        }
-    });
-   } else {
-    return res.status(403).json({message: "Customer not logged in"})
-   }
+  const username = req.body.username;
+  const password = req.body.password;
+
+  if (username && password) {
+    if (!doesExist(username)) { 
+      users.push({"username":username,"password":password});
+      return res.status(200).json({message: "User" +username+ "successfully registred. Now you can login"});
+    } else {
+      return res.status(404).json({message: "User" +username+ " already exists!"});    
+    }
+  } 
+  return res.status(404).json({message: "Unable to register user."});
 });
  
 const PORT =5000;

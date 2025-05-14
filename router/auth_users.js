@@ -6,12 +6,14 @@ const regd_users = express.Router();
 let users = [];
 
 const isValid = (username)=>{
-   for (var user in users) {
-    if (user["username"] === username) {
-        return true;
-    }
+   let usersamename = users.filter((user)=>{
+    return user.username === username
+   });
+   if(usersamename.length > 0){
+    return true;
+   } else {
+    return false;
    }
-   return fales;
 }
 
 const authenticatedUser = (username,password)=>{
@@ -33,17 +35,18 @@ regd_users.post("/login", (req,res) => {
     if (!username || !password){
         return res.status(404).json({message: "Error Logging in"})
     }
+
     if (authenticatedUser(username,password)) {
         let accessToken = jwt.sign({
             data: password
-        }, 'access', {expiresIn: 60 * 60});
+        }, 'access', { expiresIn: 60 * 60 });
 
         req.session.autheriztion = {
             accessToken,username
         }
         return res.status(200).send({message: "User successfully logged in."})
     } else {
-        return res.status(208).send({message: "Invalid Login. Check username and password"})
+        return res.status(208).json({message: "Invalid Login. Check username and password"})
     }
 });
 
