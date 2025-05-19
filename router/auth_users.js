@@ -41,8 +41,8 @@ regd_users.post("/login", (req,res) => {
             data: password
         }, 'access', { expiresIn: 60 * 60 });
 
-        req.session.authoriztion = {
-            accessToken, username
+        req.session.autheriztion = {
+            accessToken,username
         }
         return res.status(200).send({message: "User successfully logged in."})
     } else {
@@ -50,34 +50,36 @@ regd_users.post("/login", (req,res) => {
     }
 });
 
-// Task 8 - Add a book review
+// Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
-  
+  //Write your code here
   const ibsn = req.params.isbn;
-  let filtered_book = books[isbn];
+  let filtered_book = books[isbn]
   if (filtered_book) {
     let review = req.query.review;
-    let reviewer = req.session.authoriztion['username'];
+    let reviewer = req.session.autheriztion['username'];
     if (review) {
         filtered_book['reviews'][reviewer] = review;
         books[isbn] = filtered_book;
     }
-    res.send('The review for the book with ISBN ${isbn} has been added/updated');
+    res.send('The reivew for the book with ISBN ${isbn} has been added/updated');
   } else {
     res.send("Unable to find this ISBN!");
   }
+  //return res.status(300).json({message: "Yet to be implemented"});
 });
 
-//Task 9 - Delete a book review
+//delete section not added
+//Delete a book review
 regd_users.delete("/auth/review/:isbn", (req, res) => {
-    let isbn = req.params.isbn;
-    let reviewer = req.session.authoriztion['username'];
+    const isbn = req.params.isbn;
+    let reviewer = req.session.autheriztion['username'];
     let filtered_review = books[isbn]["reviews"];
     if (filtered_review[reviewer]){
         delete filtered_review[reviewer];
-        res.send("Reviews for the ISBN ${isbn} post by the user ${reviewer} deleted");
+        res.send('Reviews for the ISBN ${isbn} post by the user ${reviewer} deleted');
     } else {
-        res.send("Can't delete, as this review has been posted by a different user.");
+        res.send("Can't delete, as this reivew has been posted by a different user.");
     }
 })
 
