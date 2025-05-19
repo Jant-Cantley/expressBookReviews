@@ -41,7 +41,7 @@ regd_users.post("/login", (req,res) => {
             data: password
         }, 'access', { expiresIn: 60 * 60 });
 
-        req.session.autheriztion = {
+        req.session.authoriztion = {
             accessToken,username
         }
         return res.status(200).send({message: "User successfully logged in."})
@@ -53,11 +53,11 @@ regd_users.post("/login", (req,res) => {
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
   //Write your code here
-  const ibsn = req.params.isbn;
+  const isbn = req.params.isbn;
   let filtered_book = books[isbn]
   if (filtered_book) {
-    let review = req.query.review;
-    let reviewer = req.session.autheriztion['username'];
+    let review = req.query.isbn;
+    let reviewer = req.session.authoriztion['username'];
     if (review) {
         filtered_book['reviews'][reviewer] = review;
         books[isbn] = filtered_book;
@@ -73,7 +73,7 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
 //Delete a book review
 regd_users.delete("/auth/review/:isbn", (req, res) => {
     const isbn = req.params.isbn;
-    let reviewer = req.session.autheriztion['username'];
+    let reviewer = req.session.authoriztion['username'];
     let filtered_review = books[isbn]["reviews"];
     if (filtered_review[reviewer]){
         delete filtered_review[reviewer];

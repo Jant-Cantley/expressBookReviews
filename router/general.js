@@ -4,7 +4,7 @@ let isValid = require("./auth_users.js").isValid;
 let users = require("./auth_users.js").users;
 const public_users = express.Router();
 
-const doesExist = (username)=>{
+const isValid = (username)=>{
     let usersamename = users.filter((user)=>{
       return user.username === username
     });
@@ -18,13 +18,13 @@ const doesExist = (username)=>{
 //adding new users
 public_users.post("/register", (req,res) => {
   const username = req.body.username;
-  const password = req.body.username;
+  const password = req.body.password;
   if (username && password) {
     if (!doesExist(username)) { 
       users.push({"username":username,"password":password});
-      return res.status(200).json({message: "User" +username+ "successfully registred. Now you can login"});
+      return res.status(200).json({message:  "`User ${username}` successfully registred. Now you can login"});
     } else {
-      return res.status(404).json({message: "User" +username+ " already exists!"});    
+      return res.status(404).json({message: "`User ${username}` already exists!"});    
     }
   } 
   return res.status(404).json({message: "Unable to register user."});
@@ -53,6 +53,7 @@ public_users.get('/author/:author', function (req, res) {
           "reviews": books[isbn]["reviews"]
         });
       }
+      resolve()
     });
     res.send(JSON.stringify({ booksbyauthor }, null, 4));
   });
@@ -69,6 +70,7 @@ public_users.get('/title/:title',function (req, res) {
             "reviews": books[isbn]["reviews"]
         });
     }
+    resolve()
   });
   res.send(JSON.stringify({ booksbytitle }, null, 4));
 });
@@ -78,7 +80,7 @@ public_users.get('/review/:isbn',function (req, res) {
     let booksbyreview = [];
     let isbns = Object.keys(books);
     isbns.forEach((isbn) => {
-        if (books[isbn]["reivews"] === req.params.reivews) {
+        if (books[isbn]["reviews"] === req.params.reviews) {
             booksbyreview.push({
                 "isbn": isbn,
                 "title": books[isbn]["title"],
