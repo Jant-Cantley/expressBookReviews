@@ -5,16 +5,16 @@ const regd_users = express.Router();
 
 let users = [];
 
-const isValid = (username)=>{
-   let usersamename = users.filter((user)=>{
-    return user.username === username
-   });
-   if(usersamename.length > 0){
-    return true;
-   } else {
-    return false;
-   }
-}
+// const isValid = (username)=>{
+//    let usersamename = users.filter((user)=>{
+//     return user.username === username
+//    });
+//    if(usersamename.length > 0){
+//     return true;
+//    } else {
+//     return false;
+//    }
+// }
 
 const authenticatedUser = (username,password)=>{
     let validusers = users.filter((user)=>{
@@ -56,7 +56,7 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
   const isbn = req.params.isbn;
   let filtered_book = books[isbn]
   if (filtered_book) {
-    let review = req.query.isbn;
+    let review = req.query.review;
     let reviewer = req.session.authoriztion['username'];
     if (review) {
         filtered_book['reviews'][reviewer] = review;
