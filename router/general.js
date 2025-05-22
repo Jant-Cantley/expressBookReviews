@@ -4,16 +4,16 @@ let isValid = require("./auth_users.js").isValid;
 let users = require("./auth_users.js").users;
 const public_users = express.Router();
 
-const isValid = (username)=>{
-    let usersamename = users.filter((user)=>{
-      return user.username === username
-    });
-    if(usersamename.length > 0){
-      return true;
-    } else {
-      return false;
-    }
-  }
+// const isValid = (username)=>{
+//     let usersamename = users.filter((user)=>{
+//       return user.username === username
+//     });
+//     if(usersamename.length > 0){
+//       return true;
+//     } else {
+//       return false;
+//     }
+//   }
   
 //adding new users
 public_users.post("/register", (req,res) => {
