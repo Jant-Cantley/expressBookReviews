@@ -21,7 +21,7 @@ public_users.post("/register", (req,res) => {
 });
 
 // Task 10 - Get the book list available in the shop
-public_users.get('/books',function (req, res) {
+public_users.get('/',function (req, res) {
   const get_books = new Promise ((resolve, reject) => {
   resolve(res.send(JSON.stringify({books}, null, 4)));
   });
@@ -45,7 +45,7 @@ public_users.get('/isbn/:isbn',function (req, res) {
  });
   
 // task 12 - Get book details based on author
-public_users.get('/books/author/:author', function (req, res) {
+public_users.get('/author/:author', function (req, res) {
 
   const get_books_author = new Promise ((resolve, reject) => {
 
@@ -71,12 +71,14 @@ public_users.get('/books/author/:author', function (req, res) {
 });
 
 // task 13 - Get all books based on title
-public_users.get('/books/title/:title',function (req, res) {
+public_users.get('/title/:title',function (req, res) {
+
   const get_books_title = new Promise((resolve, reject) => {
+
     let booksbytitle = [];
     let isbns = Object.keys(books);
     isbns.forEach((isbn) => {
-      if (books[isbns]["title"] === req.params.title) {
+      if (books[isbn]["title"] === req.params.title) {
         booksbytitle.push({
           "isbn":isbn,
           "author":books[isbn]["author"],
@@ -95,7 +97,7 @@ public_users.get('/books/title/:title',function (req, res) {
 });
 
 // task 14 - Get book review
-public_users.get('/book/review/:isbn',function (req, res) {
+public_users.get('/review/:isbn',function (req, res) {
   const get_book_review = new Promise ((resolve, reject) => {
     let booksbyreview = [];
     let isbns = Object.keys(books);
